@@ -7,11 +7,30 @@
 
 import SwiftUI
 
-@main
-struct NHLAppApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+struct MainTabView: View {
+    var body: some View {
+        TabView {
+            SpotlightView()
+                .tabItem {
+                    Label("Spotlight", systemImage: "star.fill")
+                }
+
+            StandingsView()
+                .tabItem {
+                    Label("Standings", systemImage: "list.number")
+                }
         }
     }
 }
+
+
+@main
+struct NHLApp: App {
+    var body: some Scene {
+        WindowGroup {
+            MainTabView()
+        }
+    }
+}
+
+
