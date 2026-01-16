@@ -8,49 +8,48 @@
 import SwiftUI
 
 struct StandingsView: View {
-    @StateObject var viewModel = StandingsViewModel()
+    @StateObject private var viewModel = StandingsViewModel()
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(viewModel.standingsByConference.keys.sorted(), id: \.self) { conference in
-                    Section(header: Text(conference)) {
-                        ForEach(viewModel.standingsByConference[conference] ?? []) { team in
-                            HStack {
-                                AsyncImage(url: URL(string: team.teamLogo)) { image in
-                                    image.resizable()
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .frame(width: 36, height: 36)
-
-                                VStack(alignment: .leading) {
-                                    Text(team.teamName.default)
-                                        .font(.headline)
-
-                                    Text("\(team.wins)-\(team.losses)-\(team.otLosses) • \(team.points) pts")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-
-                                Spacer()
-
-                                Text("\(team.streakCode)\(team.streakCount)")
-                                    .font(.caption2)
-                                    .foregroundColor(.blue)
-                            }
-                            .padding(.vertical, 4)
-                        }
+            List(viewModel.standings) { team in
+                HStack {
+                    AsyncImage(url: URL(string: team.teamLogo)) { image in
+                        image.resizable()
+                    } placeholder: {
+                        ProgressView()
                     }
+                    .frame(width: 36, height: 36)
+
+                    VStack(alignment: .leading) {
+                        Text(team.teamName.default)
+                            .font(.headline)
+
+                        Text("\(team.wins)-\(team.losses)-\(team.otLosses) • \(team.points) pts")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+
+                    Spacer()
+
+                    Text("\(team.streakCode)\(team.streakCount)")
+                        .font(.caption2)
+                        .foregroundColor(.blue)
                 }
+                .padding(.vertical, 6)
             }
             .navigationTitle("Standings")
         }
-        .task {
-            await viewModel.fetchStandings()
+        .onAppear {
+            print("StandingsView appeared")
+            Task {
+                await viewModel.fetchStandings()
+            }
         }
     }
 }
+
+
 
 
 
