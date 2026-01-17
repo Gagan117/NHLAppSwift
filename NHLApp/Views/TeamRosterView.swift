@@ -14,34 +14,101 @@ struct TeamRosterView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
-                ForEach(viewModel.forwards + viewModel.defensemen + viewModel.goalies) { player in
-                    HStack(spacing: 12) {
-                        AsyncImage(url: URL(string: player.headshot)) { image in
-                            image.resizable()
-                                .scaledToFit()
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .frame(width: 50, height: 50)
-                        .clipShape(Circle())
-
-                        VStack(alignment: .leading) {
-                            Text("\(player.firstName.default) \(player.lastName.default)")
-                                .font(.headline)
-                            Text("\(player.positionCode) • #\(player.sweaterNumber)")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                        }
+                
+                // MARK: Forwards
+                if !viewModel.forwards.isEmpty {
+                    Section(header: Text("Forwards")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                        .padding(.top, 8)
+                    ) {
+                        playerList(players: viewModel.forwards)
                     }
-                    .padding(.vertical, 4)
+                }
+                
+                // MARK: Defensemen
+                if !viewModel.defensemen.isEmpty {
+                    Section(header: Text("Defensemen")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                        .padding(.top, 8)
+                    ) {
+                        playerList(players: viewModel.defensemen)
+                    }
+                }
+                
+                // MARK: Goalies
+                if !viewModel.goalies.isEmpty {
+                    Section(header: Text("Goalies")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                        .padding(.top, 8)
+                    ) {
+                        playerList(players: viewModel.goalies)
+                    }
                 }
             }
-            .padding()
         }
         .navigationTitle(teamCode)
         .task {
             await viewModel.fetchRoster(teamCode: teamCode)
         }
     }
+    
+    // Helper function to render a list of players
+    @ViewBuilder
+    private func playerList(players: [RosterPlayer]) -> some View {
+        ForEach(players) { player in
+            HStack(spacing: 12) {
+                
+                // Player headshot
+                AsyncImage(url: URL(string: player.headshot)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(width: 50, height: 50)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.gray.opacity(0.3), lineWidth: 1))
+                
+                // Player info
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("\(player.firstName.default) \(player.lastName.default)")
+                        .font(.headline)
+                    
+                    Text("\(player.positionCode) • #\(player.sweaterNumber) • \(player.shootsCatches)")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    
+                    // Optional physical info
+                    if let height = player.heightInInches, let weight = player.weightInPounds {
+                        Text("\(height) in • \(weight) lbs")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    if let city = player.birthCity?.default, let country = player.birthCountry {
+                        Text("\(city), \(country)")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 6)
+            .background(.ultraThinMaterial)
+            .cornerRadius(12)
+            .shadow(radius: 1)
+        }
+    }
 }
+
+
 
