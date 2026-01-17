@@ -13,37 +13,45 @@ struct StandingsView: View {
     var body: some View {
         NavigationView {
             List(viewModel.standings) { team in
-                HStack {
-                    SVGImageView(url: URL(string: team.teamLogo)!)
-                        .frame(width: 36, height: 36)
+                NavigationLink(destination: TeamRosterView(teamCode: team.teamAbbrev.default)) {
+                    HStack {
+                        if let url = URL(string: team.teamLogo) {
+                            SVGImageView(url: url)
+                                .frame(width: 32, height: 32)
+                                .scaledToFit()
+                        }
 
-                    VStack(alignment: .leading) {
-                        Text(team.teamName.default)
-                            .font(.headline)
+                        VStack(alignment: .leading) {
+                            Text(team.teamName.default)
+                                .font(.headline)
 
-                        Text("\(team.wins)-\(team.losses)-\(team.otLosses) • \(team.points) pts")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                            Text("\(team.wins)-\(team.losses)-\(team.otLosses) • \(team.points) pts")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+
+                        Spacer()
+
+                        Text("\(team.streakCode)\(team.streakCount)")
+                            .font(.caption2)
+                            .foregroundColor(.blue)
                     }
-
-                    Spacer()
-
-                    Text("\(team.streakCode)\(team.streakCount)")
-                        .font(.caption2)
-                        .foregroundColor(.blue)
+                    .padding(.vertical, 6)
                 }
-                .padding(.vertical, 6)
             }
             .navigationTitle("Standings")
         }
         .onAppear {
-            print("StandingsView appeared")
             Task {
                 await viewModel.fetchStandings()
             }
         }
     }
 }
+
+
+
+
 
 
 
