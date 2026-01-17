@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6E459B882F1BDC5C004F99B6 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6E459B872F1BDC5C004F99B6 /* SVGKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		6E459B182F1ABF6E004F99B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E459B882F1BDC5C004F99B6 /* SVGKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = NHLApp;
 			packageProductDependencies = (
+				6E459B872F1BDC5C004F99B6 /* SVGKit */,
 			);
 			productName = NHLApp;
 			productReference = 6E459B0A2F1ABF6D004F99B6 /* NHLApp.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 6E459B012F1ABF6D004F99B6;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6E459B862F1BDC5B004F99B6 /* XCRemoteSwiftPackageReference "SVGKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6E459B0B2F1ABF6D004F99B6 /* Products */;
 			projectDirPath = "";
@@ -550,6 +559,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6E459B862F1BDC5B004F99B6 /* XCRemoteSwiftPackageReference "SVGKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVGKit/SVGKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6E459B872F1BDC5C004F99B6 /* SVGKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E459B862F1BDC5B004F99B6 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6E459B022F1ABF6D004F99B6 /* Project object */;
 }

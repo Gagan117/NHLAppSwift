@@ -14,12 +14,8 @@ struct StandingsView: View {
         NavigationView {
             List(viewModel.standings) { team in
                 HStack {
-                    AsyncImage(url: URL(string: team.teamLogo)) { image in
-                        image.resizable()
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(width: 36, height: 36)
+                    SVGImageView(url: URL(string: team.teamLogo)!)
+                        .frame(width: 36, height: 36)
 
                     VStack(alignment: .leading) {
                         Text(team.teamName.default)

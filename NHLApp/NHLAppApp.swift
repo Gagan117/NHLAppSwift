@@ -19,6 +19,11 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Standings", systemImage: "list.number")
                 }
+
+            DailyScheduleView()
+                .tabItem {
+                    Label("Games", systemImage: "sportscourt")
+                }
         }
     }
 }
